@@ -10,5 +10,6 @@ namespace Database.Repositories.UserRepo
     public interface IUserRepository
     {
         Task Insert(CreateUserDto createUserDto);
+        Task<UserDto> GetByEmail(string email);
     }
 }

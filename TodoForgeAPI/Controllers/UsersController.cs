@@ -32,5 +32,20 @@ namespace TodoForgeAPI.Controllers
 
             return Ok(user);
         }
+
+        [HttpPost]
+        [AllowAnonymous]
+        [Route("login")]
+        public async Task<IActionResult> Login(LoginDto login)
+        {
+            var user = await _userRepository.GetByEmail(
+                login.Email
+            );
+
+            if (user == null)
+                return NotFound();
+
+            return Ok(user);
+        }
     }
 }

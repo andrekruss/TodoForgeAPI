@@ -1,5 +1,6 @@
 ﻿using Database.Entities;
 using Dtos.UserDtos;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -31,6 +32,24 @@ namespace Database.Repositories.UserRepo
 
             await _context.Users.AddAsync(user);
             await _context.SaveChangesAsync();
+        }
+
+        public async Task<UserDto> GetByEmail(string email)
+        {
+            var user = await _context.Users.FirstOrDefaultAsync(user => user.Email.Equals(email) == true);
+
+            if (user == null)
+                return null;
+
+            var userDto = new UserDto(
+                user.Id,
+                user.Username,
+                user.Email,
+                user.IsActive,
+                user.CreatedAt
+            );
+
+            return userDto;
         }
     }
 }
