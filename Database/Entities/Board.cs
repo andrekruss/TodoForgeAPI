@@ -1,30 +1,26 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
 namespace Database.Entities
 {
-    public class User
+    public class Board
     {
         public int Id { get; set; }
 
         [Required]
+        public int OwnerId { get; set; }
+
+        [Required]
         [MaxLength(100)]
-        public string Username { get; set; }
+        public string Title { get; set; }
 
-        [Required]
         [MaxLength(200)]
-        public string Email { get; set; }
-
-        [Required]
-        [MaxLength(200)]
-        public string Password { get; set; }
-
-        [Required]
-        public bool IsActive { get; set; }
+        public string Description { get; set; }
 
         [Required]
         public DateTime CreatedAt { get; set; }
@@ -32,6 +28,7 @@ namespace Database.Entities
         [Required]
         public DateTime UpdatedAt { get; set; }
 
-        public ICollection<Board> Boards { get; set; } = new List<Board>();
+        [ForeignKey("OwnerId")]
+        public User Owner { get; set; }
     }
 }
