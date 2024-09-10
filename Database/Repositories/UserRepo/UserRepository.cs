@@ -18,16 +18,16 @@ namespace Database.Repositories.UserRepo
             _context = context;
         }
 
-        public async Task Insert(CreateUserDto createUserDto)
+        public async Task Insert(UserDto userDto)
         {
             var user = new User
             {
-                Username = createUserDto.Username,
-                Email = createUserDto.Email,
-                Password = createUserDto.Password,
-                IsActive = true,
-                CreatedAt = DateTime.UtcNow,
-                UpdatedAt = DateTime.UtcNow
+                Username = userDto.Username,
+                Email = userDto.Email,
+                Password = userDto.Password,
+                IsActive = userDto.IsActive,
+                CreatedAt = userDto.CreatedAt,
+                UpdatedAt = userDto.UpdatedAt
             };
 
             await _context.Users.AddAsync(user);
@@ -42,11 +42,12 @@ namespace Database.Repositories.UserRepo
                 return null;
 
             var userDto = new UserDto(
-                user.Id,
                 user.Username,
                 user.Email,
+                user.Password,
                 user.IsActive,
-                user.CreatedAt
+                user.CreatedAt,
+                user.UpdatedAt
             );
 
             return userDto;

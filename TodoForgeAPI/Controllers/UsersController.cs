@@ -2,7 +2,9 @@
 using Database.Repositories.UserRepo;
 using Dtos.UserDtos;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using TodoForgeAPI.Services;
 
 namespace TodoForgeAPI.Controllers
 {
@@ -12,25 +14,37 @@ namespace TodoForgeAPI.Controllers
     public class UsersController : ControllerBase
     {
         private readonly IUserRepository _userRepository;
+        private readonly JwtService _jwtService;
+        private readonly PasswordHasher<UserDto> _passwordHasher;
 
-        public UsersController(IUserRepository userRepository)
+        public UsersController(IUserRepository userRepository, JwtService jwtService)
         {
             _userRepository = userRepository;
+            _jwtService = jwtService;
+            _passwordHasher = new PasswordHasher<UserDto>();
         }
 
         [HttpPost]
         [AllowAnonymous]
         public async Task<IActionResult> CreateUser(CreateUserRequest request)
         {
-            var user = new CreateUserDto(
+
+            var userDto = new UserDto(
                 request.Username,
                 request.Email,
-                request.Password
+                request.Password,
+                true,
+                DateTime.UtcNow,
+                DateTime.UtcNow
              );
 
-            await _userRepository.Insert(user);
+            var passwordHash = _passwordHasher.HashPassword(userDto, userDto.Password);
 
-            return Ok(user);
+            userDto.Password = passwordHash;
+
+            await _userRepository.Insert(userDto);
+
+            return Ok("User created successfully.");
         }
 
         [HttpPost]
@@ -45,7 +59,14 @@ namespace TodoForgeAPI.Controllers
             if (user == null)
                 return NotFound();
 
-            return Ok(user);
+            var result = _passwordHasher.VerifyHashedPassword(user, user.Password, login.Password);
+
+            if (result == PasswordVerificationResult.Failed)
+                return Unauthorized("Invalid credentials");
+
+            var jwtToken = _jwtService.GenerateToken(user.Username);
+
+            return Ok(new { Token = jwtToken });
         }
     }
 }

@@ -11,16 +11,29 @@ namespace Dtos.UserDtos
         public int Id { get; set; }
         public string Username { get; set; }
         public string Email { get; set; }
+        public string Password { get; set; }
         public bool IsActive { get; set; }
         public DateTime CreatedAt { get; set; }
+        public DateTime UpdatedAt { get; set; }
 
-        public UserDto(int id, string username, string email, bool isActive, DateTime createdAt)
+        public UserDto(string username, string email, string password)
         {
-            Id = id;
             Username = username;
             Email = email;
+            Password = password;
+            IsActive = true;
+            CreatedAt = DateTime.Now;
+            UpdatedAt = DateTime.Now;
+        }
+
+        public UserDto(string username, string email, string password, bool isActive, DateTime createdAt, DateTime updatedAt) 
+        { 
+            Username = username;
+            Email = email;
+            Password = password;
             IsActive = isActive;
             CreatedAt = createdAt;
+            UpdatedAt = updatedAt;
         }
     }
 }
