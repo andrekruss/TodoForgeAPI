@@ -42,6 +42,27 @@ namespace Database.Repositories.UserRepo
                 return null;
 
             var userDto = new UserDto(
+                user.Id,
+                user.Username,
+                user.Email,
+                user.Password,
+                user.IsActive,
+                user.CreatedAt,
+                user.UpdatedAt
+            );
+
+            return userDto;
+        }
+
+        public async Task<UserDto> GetById(int id)
+        {
+            var user = await _context.Users.FirstOrDefaultAsync(user => user.Id == id);
+
+            if (user == null)
+                return null;
+
+            var userDto = new UserDto(
+                user.Id,
                 user.Username,
                 user.Email,
                 user.Password,

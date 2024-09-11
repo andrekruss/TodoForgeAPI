@@ -18,11 +18,13 @@ namespace TodoForgeAPI.Services
             _audience = audience;
         }
 
-        public string GenerateToken(string username)
+        public string GenerateToken(int userId, string username, string email)
         {
             var claims = new List<Claim>
         {
-            new Claim(ClaimTypes.Name, username)
+            new Claim(ClaimTypes.Name, username),
+            new Claim(ClaimTypes.NameIdentifier, userId.ToString()),
+            new Claim(ClaimTypes.Email, email)
         };
 
             var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_secretKey));
@@ -33,7 +35,8 @@ namespace TodoForgeAPI.Services
                 audience: _audience,
                 claims: claims,
                 expires: DateTime.Now.AddHours(1),
-                signingCredentials: creds);
+                signingCredentials: creds
+            );
 
             return new JwtSecurityTokenHandler().WriteToken(token);
         }

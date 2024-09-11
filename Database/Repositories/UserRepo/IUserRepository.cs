@@ -11,5 +11,6 @@ namespace Database.Repositories.UserRepo
     {
         Task Insert(UserDto userDto);
         Task<UserDto> GetByEmail(string email);
+        Task<UserDto> GetById(int id);
     }
 }

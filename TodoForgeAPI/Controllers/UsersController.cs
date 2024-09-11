@@ -4,6 +4,7 @@ using Dtos.UserDtos;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using System.Security.Claims;
 using TodoForgeAPI.Services;
 
 namespace TodoForgeAPI.Controllers
@@ -32,10 +33,7 @@ namespace TodoForgeAPI.Controllers
             var userDto = new UserDto(
                 request.Username,
                 request.Email,
-                request.Password,
-                true,
-                DateTime.UtcNow,
-                DateTime.UtcNow
+                request.Password
              );
 
             var passwordHash = _passwordHasher.HashPassword(userDto, userDto.Password);
@@ -64,9 +62,29 @@ namespace TodoForgeAPI.Controllers
             if (result == PasswordVerificationResult.Failed)
                 return Unauthorized("Invalid credentials");
 
-            var jwtToken = _jwtService.GenerateToken(user.Username);
+            var jwtToken = _jwtService.GenerateToken(user.Id, user.Username, user.Email);
 
             return Ok(new { Token = jwtToken });
+        }
+
+        [HttpGet]
+        [Authorize]
+        [Route("me")]
+        public async Task<IActionResult> Me()
+        {
+            var userId = Int32.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier));
+            //var username = User.Identity?.Name;
+            //var email = User.FindFirstValue(ClaimTypes.Email);
+
+            var user = await _userRepository.GetById(userId);
+
+            return Ok(new
+            {
+                UserId = user.Id,
+                Username = user.Username,
+                Email = user.Email,
+                CreatedAt = user.CreatedAt
+            });
         }
     }
 }

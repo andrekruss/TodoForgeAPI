@@ -26,8 +26,9 @@ namespace Dtos.UserDtos
             UpdatedAt = DateTime.Now;
         }
 
-        public UserDto(string username, string email, string password, bool isActive, DateTime createdAt, DateTime updatedAt) 
+        public UserDto(int id, string username, string email, string password, bool isActive, DateTime createdAt, DateTime updatedAt) 
         { 
+            Id = id;
             Username = username;
             Email = email;
             Password = password;
