@@ -1,4 +1,5 @@
 using Database;
+using Database.Repositories.BoardRepo;
 using Database.Repositories.UserRepo;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
@@ -12,6 +13,7 @@ var builder = WebApplication.CreateBuilder(args);
     builder.Services.AddDbContext<TodoForgeDbContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("todo_forge_db")));
     builder.Services.AddTransient<IUserRepository, UserRepository>();
+    builder.Services.AddTransient<IBoardRepository, BoardRepository>();
     builder.Services.AddSingleton(new JwtService(builder.Configuration["JwtSecretKey"], "TodoForge", "TodoForge"));
     builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJwtBearer(options =>
     {
