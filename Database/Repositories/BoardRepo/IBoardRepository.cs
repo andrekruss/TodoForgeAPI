@@ -10,5 +10,6 @@ namespace Database.Repositories.BoardRepo
     public interface IBoardRepository
     {
         Task CreateBoard(BoardDto boardDto);
+        Task DeleteBoardById(int onwerId, int boardId);
     }
 }

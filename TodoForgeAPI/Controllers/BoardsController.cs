@@ -36,5 +36,17 @@ namespace TodoForgeAPI.Controllers
 
             return Ok("Board created successfully");
         }
+
+        [HttpDelete]
+        [Authorize]
+        [Route("{boardId}")]
+        public async Task<IActionResult> DeleteBoard(int boardId)
+        {
+            var userId = Int32.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier));
+
+            await _boardRepository.DeleteBoardById(userId, boardId);
+
+            return NoContent();
+        }
     }
 }

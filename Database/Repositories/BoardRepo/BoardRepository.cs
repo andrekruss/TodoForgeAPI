@@ -1,5 +1,6 @@
 ﻿using Database.Entities;
 using Dtos.BoardDtos;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -31,6 +32,17 @@ namespace Database.Repositories.BoardRepo
             };
 
             await _context.Boards.AddAsync(board); 
+            await _context.SaveChangesAsync();
+        }
+
+        public async Task DeleteBoardById(int ownerId, int boardId)
+        {
+            var board = await _context.Boards.FirstOrDefaultAsync(b => b.Id == boardId && b.OwnerId == ownerId);
+
+            if (board == null) 
+                return;
+
+            _context.Boards.Remove(board);
             await _context.SaveChangesAsync();
         }
     }
