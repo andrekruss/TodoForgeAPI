@@ -45,5 +45,22 @@ namespace Database.Repositories.BoardRepo
             _context.Boards.Remove(board);
             await _context.SaveChangesAsync();
         }
+
+        public async Task<ICollection<BoardDto>> GetAllBoards(int ownerId)
+        {
+            var boards = await _context.Boards
+                .Where(b => b.OwnerId == ownerId)
+                .Select(b => new BoardDto(
+                    b.Id,
+                    b.OwnerId,
+                    b.Title,
+                    b.Description,
+                    b.CreatedAt,
+                    b.UpdatedAt
+                ))
+                .ToListAsync();
+
+            return boards;
+        }
     }
 }

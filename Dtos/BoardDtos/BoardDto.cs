@@ -23,5 +23,15 @@ namespace Dtos.BoardDtos
             CreatedAt = DateTime.UtcNow;
             UpdatedAt = DateTime.UtcNow;
         }
+
+        public BoardDto(int id, int ownerId, string title, string description, DateTime createdAt, DateTime updatedAt) 
+        {
+            Id = id;
+            OwnerId = ownerId;
+            Title = title;
+            Description = description;
+            CreatedAt = createdAt;
+            UpdatedAt = updatedAt;
+        }
     }
 }

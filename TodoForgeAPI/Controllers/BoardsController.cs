@@ -19,6 +19,21 @@ namespace TodoForgeAPI.Controllers
             _boardRepository = boardRepository;
         }
 
+        [HttpGet]
+        [Authorize]
+        [Route("list-boards")]
+        public async Task<IActionResult> ListBoards()
+        {
+            var userId = Int32.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier));
+
+            var boards = await _boardRepository.GetAllBoards(userId);
+
+            if (boards == null)
+                return NotFound();
+
+            return Ok(boards);
+        }
+
         [HttpPost]
         [Authorize]
         public async Task<IActionResult> CreateBoard(CreateBoardRequest request)
