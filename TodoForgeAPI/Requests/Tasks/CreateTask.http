@@ -1,0 +1,12 @@
+﻿@jwtToken = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9uYW1lIjoidGVzdCIsImh0dHA6Ly9zY2hlbWFzLnhtbHNvYXAub3JnL3dzLzIwMDUvMDUvaWRlbnRpdHkvY2xhaW1zL25hbWVpZGVudGlmaWVyIjoiMyIsImh0dHA6Ly9zY2hlbWFzLnhtbHNvYXAub3JnL3dzLzIwMDUvMDUvaWRlbnRpdHkvY2xhaW1zL2VtYWlsYWRkcmVzcyI6InRlc3RAbWFpbC5jb20iLCJleHAiOjE3MjY1MzMxNjYsImlzcyI6IlRvZG9Gb3JnZSIsImF1ZCI6IlRvZG9Gb3JnZSJ9.dbXRoajH2VpRX5mr2OinG9c-p5H58dy-dhLcubncBlk
+@boardId = 4
+POST http://localhost:5127/api/tasks/create-task
+Authorization: Bearer {{jwtToken}}
+Content-Type: application/json
+
+{
+    "BoardId": {{boardId}},
+    "Title": "First task!",
+    "Description": "something todo",
+    "DueDate": "2024-09-25"
+}
