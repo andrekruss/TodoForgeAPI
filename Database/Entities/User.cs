@@ -33,5 +33,7 @@ namespace Database.Entities
         public DateTime UpdatedAt { get; set; }
 
         public ICollection<Board> Boards { get; set; } = new List<Board>();
+
+        public ICollection<TaskItem> Tasks { get; set; }
     }
 }
