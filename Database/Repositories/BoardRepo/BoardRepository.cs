@@ -62,5 +62,36 @@ namespace Database.Repositories.BoardRepo
 
             return boards;
         }
+
+        public async Task<BoardDto> PatchBoard(int ownerId, int boardId, BoardPatchDto boardPatchDto)
+        {
+
+            var board = await _context.Boards.FirstOrDefaultAsync(b => b.Id == boardId && b.OwnerId == ownerId);
+
+            if (board == null)
+                throw new Exception("Board not found!");
+
+            var title = boardPatchDto.Title;
+            var description = boardPatchDto.Description;
+
+            if (!String.IsNullOrEmpty(title))
+                board.Title = title;
+            if (!String.IsNullOrEmpty(description))
+                board.Description = description;
+
+            board.UpdatedAt = boardPatchDto.UpdatedAt;
+
+            await _context.SaveChangesAsync();
+
+            return new BoardDto
+            (
+                board.Id,
+                ownerId,
+                board.Title,
+                board.Description,
+                board.CreatedAt,
+                board.UpdatedAt
+            );
+        }
     }
 }

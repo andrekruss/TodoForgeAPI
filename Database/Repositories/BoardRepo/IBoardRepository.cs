@@ -12,5 +12,6 @@ namespace Database.Repositories.BoardRepo
         Task CreateBoard(BoardDto boardDto);
         Task DeleteBoardById(int onwerId, int boardId);
         Task<ICollection<BoardDto>> GetAllBoards(int ownerId);
+        Task<BoardDto> PatchBoard(int ownerId, int boardId, BoardPatchDto boardPatchDto);
     }
 }

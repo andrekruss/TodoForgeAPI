@@ -1,4 +1,10 @@
 ﻿@jwtToken = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9uYW1lIjoidGVzdCIsImh0dHA6Ly9zY2hlbWFzLnhtbHNvYXAub3JnL3dzLzIwMDUvMDUvaWRlbnRpdHkvY2xhaW1zL25hbWVpZGVudGlmaWVyIjoiMyIsImh0dHA6Ly9zY2hlbWFzLnhtbHNvYXAub3JnL3dzLzIwMDUvMDUvaWRlbnRpdHkvY2xhaW1zL2VtYWlsYWRkcmVzcyI6InRlc3RAbWFpbC5jb20iLCJleHAiOjE3MjY0OTY5MjQsImlzcyI6IlRvZG9Gb3JnZSIsImF1ZCI6IlRvZG9Gb3JnZSJ9.Ga1x2CkJ414tb2Gtp1I5TovZFv_ytk-Kb9G8ZRAcikA
-GET http://localhost:5127/api/boards/list-boards
+@boardId = 5
+PATCH http://localhost:5127/api/boards/update-board/{{boardId}}
 Authorization: Bearer {{jwtToken}}
 Content-Type: application/json
+
+{
+    "Title": "College Board",
+    "Description": ""
+}

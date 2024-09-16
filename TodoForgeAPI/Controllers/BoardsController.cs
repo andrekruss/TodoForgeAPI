@@ -63,5 +63,23 @@ namespace TodoForgeAPI.Controllers
 
             return NoContent();
         }
+
+        [HttpPatch]
+        [Authorize]
+        [Route("update-board/{boardId}")]
+        public async Task<IActionResult> PatchBoard([FromRoute] int boardId, [FromBody] UpdateBoardRequest request)
+        {
+            var userId = Int32.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier));
+
+            var boardPatchDto = new BoardPatchDto(
+                request.Title,
+                request.Description,
+                DateTime.UtcNow
+            );
+
+            var boardDto = await _boardRepository.PatchBoard(userId, boardId, boardPatchDto);
+
+            return Ok(boardDto);
+        }
     }
 }
