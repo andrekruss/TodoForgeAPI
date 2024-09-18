@@ -32,9 +32,23 @@ namespace TodoForgeAPI.Controllers
                 request.DueDate
             );
 
-            await _taskItemRepository.Insert(userId, createTaskItemDto);
+            var taskItemDto = await _taskItemRepository.Insert(userId, createTaskItemDto);
 
-            return Created();
+            return CreatedAtAction(null, taskItemDto);
+        }
+
+        [HttpGet]
+        [Authorize]
+        [Route("list-tasks/{boardId}")]
+        public async Task<IActionResult> GetTasksByBoard([FromRoute] int boardId)
+        {
+            var userId = Int32.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier));
+
+            var tasks = await _taskItemRepository.ListTasks(userId, boardId);
+
+            if (tasks == null)
+                return NotFound();
+            return Ok(tasks);
         }
     }
 }

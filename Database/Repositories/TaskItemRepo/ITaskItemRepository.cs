@@ -9,6 +9,7 @@ namespace Database.Repositories.TaskItemRepo
 {
     public interface ITaskItemRepository
     {
-        Task Insert(int ownerId, CreateTaskItemDto createTaskDto);
+        Task<TaskItemDto> Insert(int ownerId, CreateTaskItemDto createTaskDto);
+        Task<ICollection<TaskItemDto>> ListTasks(int ownerId, int boardId);
     }
 }
