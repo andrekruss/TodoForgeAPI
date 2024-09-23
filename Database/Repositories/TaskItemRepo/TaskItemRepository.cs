@@ -17,6 +17,7 @@ namespace Database.Repositories.TaskItemRepo
         { 
             _context = context;
         }
+
         public async Task<TaskItemDto> Insert(int ownerId, CreateTaskItemDto createTaskDto)
         {
 
@@ -70,6 +71,38 @@ namespace Database.Repositories.TaskItemRepo
                 .ToListAsync();
 
             return tasks;
+        }
+
+        public async Task Delete(int ownerId, int taskId)
+        {
+            var taskItem = await _context.Tasks.FirstOrDefaultAsync(t => t.Id == taskId && t.OwnerId == ownerId);
+
+            if (taskItem == null)
+                throw new Exception("Task does not exist");
+
+            _context.Tasks.Remove(taskItem);
+            await _context.SaveChangesAsync();
+        }
+
+        public async Task<TaskItemDto> GetTaskItemById(int ownerId, int taskId)
+        {
+            var task = await _context.Tasks.FirstOrDefaultAsync(t => t.Id == t.OwnerId);
+
+            if (task != null)
+            {
+                return new TaskItemDto { 
+                    Id = task.Id,
+                    OwnerId = task.OwnerId,
+                    BoardId = task.BoardId,
+                    Title = task.Title,
+                    Description = task.Description,
+                    DeliveryDate = task.DeliveryDate,
+                    DueDate = task.DueDate,
+                    CreatedAt = task.CreatedAt,
+                    UpdatedAt = task.UpdatedAt
+                };
+            }
+            return null;
         }
     }
 }

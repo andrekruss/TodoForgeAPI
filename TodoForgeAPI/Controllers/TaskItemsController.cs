@@ -1,4 +1,5 @@
 ﻿using Contracts.TaskItem;
+using Database.Entities;
 using Database.Repositories.TaskItemRepo;
 using Dtos.TaskItemDtos;
 using Microsoft.AspNetCore.Authorization;
@@ -49,6 +50,16 @@ namespace TodoForgeAPI.Controllers
             if (tasks == null)
                 return NotFound();
             return Ok(tasks);
+        }
+
+        [HttpDelete]
+        [Authorize]
+        [Route("delete-task/{taskId}")]
+        public async Task<IActionResult> DeleteTask([FromRoute] int taskId)
+        {
+            var userId = Int32.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier));
+            await _taskItemRepository.Delete(userId, taskId);
+            return NoContent();
         }
     }
 }
